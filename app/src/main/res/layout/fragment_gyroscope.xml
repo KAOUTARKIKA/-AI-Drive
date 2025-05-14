@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".ui.Gyroscope.GyroscopeFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Données du gyroscope"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tv_gyroscope_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="En attente..."
+        android:textStyle="italic"
+        android:layout_marginBottom="16dp" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_gyroscope_x"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rotation X: 0.00 rad/s"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_gyroscope_y"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rotation Y: 0.00 rad/s"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tv_gyroscope_z"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rotation Z: 0.00 rad/s"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Informations"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Le gyroscope mesure la vitesse de rotation de l'appareil en radians par seconde.\n\nAxe X: Rotation autour de l'axe horizontal (gauche-droite)\nAxe Y: Rotation autour de l'axe vertical (haut-bas)\nAxe Z: Rotation autour de l'axe perpendiculaire à l'écran\n\nTournez votre appareil pour voir les valeurs changer." />
+
+</LinearLayout>

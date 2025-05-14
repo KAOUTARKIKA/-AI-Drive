@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_accelerometre">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.ai_drive.ui.home.HomeFragment"
-        android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        android:id="@+id/nav_accelerometre"
+        android:name="com.example.ai_drive.ui.Accelerometre.AccelerometreFragment"
+        android:label="Accéléromètre"
+        tools:layout="@layout/fragment_accelerometre" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.ai_drive.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_gps"
+        android:name="com.example.ai_drive.ui.GPS.GPSFragment"
+        android:label="GPS"
+        tools:layout="@layout/fragment_g_p_s" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.ai_drive.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_gyroscope"
+        android:name="com.example.ai_drive.ui.Gyroscope.GyroscopeFragment"
+        android:label="Gyroscope"
+        tools:layout="@layout/fragment_gyroscope" />
 </navigation>

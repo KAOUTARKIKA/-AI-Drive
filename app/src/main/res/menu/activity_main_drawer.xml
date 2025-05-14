@@ -4,17 +4,18 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
+        <!-- Nouveaux éléments du menu -->
         <item
-            android:id="@+id/nav_home"
+            android:id="@+id/nav_accelerometre"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="Accéléromètre" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_gps"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="GPS" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_gyroscope"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="Gyroscope" />
     </group>
 </menu>
