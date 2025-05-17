@@ -1,6 +1,12 @@
 package com.example.ai_drive.model;
 
+import android.os.Build;
+
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 public class AccelerometerDataModel {
     private float x;
@@ -14,8 +20,10 @@ public class AccelerometerDataModel {
         this.y = y;
         this.z = z;
         this.deviceId = deviceId;
-        this.timestamp = LocalDateTime.now().toString();
+        // Format ISO simple sans nanosecondes
+        this.timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
     }
+
 
     // Getters et Setters
     public float getX() {
@@ -50,6 +58,7 @@ public class AccelerometerDataModel {
         this.deviceId = deviceId;
     }
 
+    // Et réajouter les getters/setters
     public String getTimestamp() {
         return timestamp;
     }
@@ -57,4 +66,6 @@ public class AccelerometerDataModel {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
+
+
 }

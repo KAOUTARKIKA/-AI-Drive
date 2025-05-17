@@ -19,6 +19,7 @@ import com.example.ai_drive.R;
 import com.example.ai_drive.api.ApiClient;
 import com.example.ai_drive.api.ApiService;
 import com.example.ai_drive.model.GyroscopeDataModel;
+import com.example.ai_drive.utils.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +35,7 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
     private String deviceId;
     private long lastUploadTime = 0;
     private static final long UPLOAD_INTERVAL = 5000; // Intervalle de 5 secondes entre les envois
+    private SessionManager sessionManager;
 
     public GyroscopeFragment() {
         // Required empty public constructor
@@ -57,6 +59,9 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
 
         // Obtenir l'ID de l'appareil
         deviceId = Secure.getString(requireActivity().getContentResolver(), Secure.ANDROID_ID);
+
+        // Initialiser SessionManager
+        sessionManager = new SessionManager(requireContext());
     }
 
     @Override
@@ -128,7 +133,16 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
     private void uploadGyroscopeData(float rotX, float rotY, float rotZ) {
         GyroscopeDataModel data = new GyroscopeDataModel(rotX, rotY, rotZ, deviceId);
 
-        apiService.saveGyroscopeData(data).enqueue(new Callback<GyroscopeDataModel>() {
+        // Vérifier si l'utilisateur est connecté
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Récupérer le token d'authentification
+        String token = sessionManager.getToken();
+
+        apiService.saveGyroscopeData(token, data).enqueue(new Callback<GyroscopeDataModel>() {
             @Override
             public void onResponse(Call<GyroscopeDataModel> call, Response<GyroscopeDataModel> response) {
                 if (response.isSuccessful()) {
@@ -136,7 +150,13 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
                     // Vous pouvez ajouter un indicateur dans l'UI si vous le souhaitez
                 } else {
                     // Gérer l'erreur
-                    Toast.makeText(requireContext(), "Erreur d'envoi gyroscope: " + response.code(), Toast.LENGTH_SHORT).show();
+                    if (response.code() == 401) {
+                        // Token expiré ou invalide
+                        sessionManager.logout();
+                        Toast.makeText(requireContext(), "Session expirée, veuillez vous reconnecter", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Erreur d'envoi gyroscope: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

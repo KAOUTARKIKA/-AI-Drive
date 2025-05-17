@@ -1,46 +1,66 @@
 package com.example.ai_drive;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ai_drive.databinding.ActivityMainBinding;
+import com.example.ai_drive.utils.SessionManager;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
+    private SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // Initialiser SessionManager
+        sessionManager = new SessionManager(this);
 
-        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
+        // Vérifier si l'utilisateur est connecté
+        if (!sessionManager.isLoggedIn()) {
+            // Rediriger vers la page de connexion
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+            return;
+        }
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null)
-                        .setAnchorView(R.id.fab).show();
+                Snackbar.make(view, "Version 1.0.0", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        // Afficher le nom d'utilisateur dans le menu latéral
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvUsername = headerView.findViewById(R.id.textView);
+        tvUsername.setText(sessionManager.getUsername());
+
+        // Passer chaque ID de menu comme un ensemble d'IDs car chacun
+        // doit être considéré comme destination de niveau supérieur.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_accelerometre, R.id.nav_gps, R.id.nav_gyroscope)
                 .setOpenableLayout(drawer)
@@ -55,6 +75,22 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here
+        int id = item.getItemId();
+
+        if (id == R.id.action_logout) {
+            // Déconnecter l'utilisateur
+            sessionManager.logout();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.example.ai_drive.R;
 import com.example.ai_drive.api.ApiClient;
 import com.example.ai_drive.api.ApiService;
 import com.example.ai_drive.model.GPSDataModel;
+import com.example.ai_drive.utils.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +35,7 @@ public class GPSFragment extends Fragment implements LocationListener {
     private TextView tvLatitude, tvLongitude, tvAltitude, tvSpeed, tvStatus;
     private ApiService apiService;
     private String deviceId;
+    private SessionManager sessionManager;
 
     public GPSFragment() {
         // Required empty public constructor
@@ -54,6 +56,9 @@ public class GPSFragment extends Fragment implements LocationListener {
 
         // Obtenir l'ID de l'appareil
         deviceId = Secure.getString(requireActivity().getContentResolver(), Secure.ANDROID_ID);
+
+        // Initialiser SessionManager
+        sessionManager = new SessionManager(requireContext());
     }
 
     @Override
@@ -170,7 +175,16 @@ public class GPSFragment extends Fragment implements LocationListener {
     private void uploadGPSData(double latitude, double longitude, double altitude, float speed) {
         GPSDataModel data = new GPSDataModel(latitude, longitude, altitude, speed, deviceId);
 
-        apiService.saveGPSData(data).enqueue(new Callback<GPSDataModel>() {
+        // Vérifier si l'utilisateur est connecté
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Récupérer le token d'authentification
+        String token = sessionManager.getToken();
+
+        apiService.saveGPSData(token, data).enqueue(new Callback<GPSDataModel>() {
             @Override
             public void onResponse(Call<GPSDataModel> call, Response<GPSDataModel> response) {
                 if (response.isSuccessful()) {
@@ -178,7 +192,13 @@ public class GPSFragment extends Fragment implements LocationListener {
                     // Vous pouvez ajouter un indicateur dans l'UI si vous le souhaitez
                 } else {
                     // Gérer l'erreur
-                    Toast.makeText(requireContext(), "Erreur d'envoi GPS: " + response.code(), Toast.LENGTH_SHORT).show();
+                    if (response.code() == 401) {
+                        // Token expiré ou invalide
+                        sessionManager.logout();
+                        Toast.makeText(requireContext(), "Session expirée, veuillez vous reconnecter", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "Erreur d'envoi GPS: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 

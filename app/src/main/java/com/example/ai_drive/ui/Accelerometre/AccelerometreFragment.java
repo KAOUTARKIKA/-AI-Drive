@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.example.ai_drive.R;
 import com.example.ai_drive.api.ApiClient;
 import com.example.ai_drive.api.ApiService;
 import com.example.ai_drive.model.AccelerometerDataModel;
+import com.example.ai_drive.utils.SessionManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +36,7 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
     private String deviceId;
     private long lastUploadTime = 0;
     private static final long UPLOAD_INTERVAL = 5000; // Intervalle de 5 secondes entre les envois
+    private SessionManager sessionManager;
 
     public AccelerometreFragment() {
         // Required empty public constructor
@@ -57,6 +60,9 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
 
         // Obtenir l'ID de l'appareil
         deviceId = Secure.getString(requireActivity().getContentResolver(), Secure.ANDROID_ID);
+
+        // Initialiser SessionManager
+        sessionManager = new SessionManager(requireContext());
     }
 
     @Override
@@ -127,15 +133,41 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
     private void uploadAccelerometerData(float x, float y, float z) {
         AccelerometerDataModel data = new AccelerometerDataModel(x, y, z, deviceId);
 
-        apiService.saveAccelerometerData(data).enqueue(new Callback<AccelerometerDataModel>() {
+        // Vérifier si l'utilisateur est connecté
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Récupérer le token d'authentification et l'afficher dans les logs
+        String token = sessionManager.getToken();
+        Log.d("AUTH_DEBUG", "Token: " + token); // Vérifiez ce token dans les logs
+
+        apiService.saveAccelerometerData(token, data).enqueue(new Callback<AccelerometerDataModel>() {
             @Override
             public void onResponse(Call<AccelerometerDataModel> call, Response<AccelerometerDataModel> response) {
                 if (response.isSuccessful()) {
                     // Données enregistrées avec succès
                     // Vous pouvez ajouter un indicateur dans l'UI si vous le souhaitez
+                    Log.d("AUTH_DEBUG", "Envoi réussi");
                 } else {
                     // Gérer l'erreur
-                    Toast.makeText(requireContext(), "Erreur d'envoi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    if (response.code() == 401) {
+                        // Token expiré ou invalide
+                        sessionManager.logout();
+                        Toast.makeText(requireContext(), "Session expirée, veuillez vous reconnecter", Toast.LENGTH_SHORT).show();
+                        Log.e("AUTH_DEBUG", "Erreur 401: Token invalide");
+                    } else {
+                        try {
+                            // Afficher le corps de la réponse d'erreur
+                            String errorBody = response.errorBody() != null ? response.errorBody().string() : "Erreur inconnue";
+                            Toast.makeText(requireContext(), "Erreur d'envoi: " + response.code() + " - " + errorBody, Toast.LENGTH_LONG).show();
+                            Log.e("AUTH_DEBUG", "Erreur " + response.code() + ": " + errorBody);
+                        } catch (Exception e) {
+                            Toast.makeText(requireContext(), "Erreur d'envoi: " + response.code(), Toast.LENGTH_SHORT).show();
+                            Log.e("AUTH_DEBUG", "Erreur " + response.code() + ": " + e.getMessage());
+                        }
+                    }
                 }
             }
 
@@ -143,9 +175,11 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
             public void onFailure(Call<AccelerometerDataModel> call, Throwable t) {
                 // Gérer l'échec de la connexion
                 Toast.makeText(requireContext(), "Échec de connexion: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("AUTH_DEBUG", "Échec de connexion: " + t.getMessage());
             }
         });
-    }
+    };
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
