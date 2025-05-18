@@ -30,7 +30,7 @@ import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private TextInputEditText etUsername, etEmail, etPassword;
+    private TextInputEditText etUsername, etEmail, etPassword, etTelephone;
     private Spinner spinnerVehicles;
     private Button btnSignup;
     private TextView tvLogin;
@@ -50,6 +50,7 @@ public class SignupActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
+        etTelephone = findViewById(R.id.et_telephone);
         spinnerVehicles = findViewById(R.id.spinner_vehicles);
         btnSignup = findViewById(R.id.btn_signup);
         tvLogin = findViewById(R.id.tv_login);
@@ -136,6 +137,7 @@ public class SignupActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
+        String telephone = etTelephone.getText().toString().trim();
 
         // Validation des champs
         if (username.isEmpty()) {
@@ -156,6 +158,12 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        if (telephone.isEmpty()) {
+            etTelephone.setError("Veuillez entrer un numéro de téléphone");
+            etTelephone.requestFocus();
+            return;
+        }
+
         if (selectedVehicleId == null) {
             Toast.makeText(this, "Veuillez sélectionner un véhicule", Toast.LENGTH_SHORT).show();
             return;
@@ -165,7 +173,7 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
 
         // Créer l'objet de requête
-        SignupRequestModel signupRequest = new SignupRequestModel(username, password, email, selectedVehicleId);
+        SignupRequestModel signupRequest = new SignupRequestModel(username, password, email, selectedVehicleId, telephone);
 
         // Envoyer la requête d'inscription
         apiService.signup(signupRequest).enqueue(new Callback<AuthResponseModel>() {

@@ -56,6 +56,20 @@
             android:hint="Mot de passe"
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Champ pour le téléphone -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_telephone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Numéro de téléphone"
+            android:inputType="phone" />
+    </com.google.android.material.textfield.TextInputLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
