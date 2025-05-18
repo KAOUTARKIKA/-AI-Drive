@@ -175,6 +175,12 @@ public class GPSFragment extends Fragment implements LocationListener {
     private void uploadGPSData(double latitude, double longitude, double altitude, float speed) {
         GPSDataModel data = new GPSDataModel(latitude, longitude, altitude, speed, deviceId);
 
+        // Récupérer le vehicleId actif et l'associer si présent
+        Long activeVehicleId = sessionManager.getActiveVehicleId();
+        if (activeVehicleId != -1) {
+            data.setVehicleId(activeVehicleId);
+        }
+
         // Vérifier si l'utilisateur est connecté
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();

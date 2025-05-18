@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    // Dans MainActivity.java, modifier onOptionsItemSelected:
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here
@@ -87,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
             sessionManager.logout();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+            return true;
+        } else if (id == R.id.action_select_vehicle) {
+            // Ouvrir l'activité de sélection de véhicule
+            startActivity(new Intent(MainActivity.this, SelectVehicleActivity.class));
             return true;
         }
 

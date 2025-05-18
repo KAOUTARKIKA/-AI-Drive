@@ -10,6 +10,7 @@ public class SessionManager {
     private static final String KEY_USERNAME = "username";
     private static final String KEY_USER_ID = "userId";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_ACTIVE_VEHICLE_ID = "activeVehicleId";
 
     // Variables
     private SharedPreferences pref;
@@ -50,5 +51,14 @@ public class SessionManager {
     public void logout() {
         editor.clear();
         editor.commit();
+    }
+
+    public void setActiveVehicle(Long vehicleId) {
+        editor.putLong(KEY_ACTIVE_VEHICLE_ID, vehicleId);
+        editor.commit();
+    }
+
+    public Long getActiveVehicleId() {
+        return pref.getLong(KEY_ACTIVE_VEHICLE_ID, -1);
     }
 }

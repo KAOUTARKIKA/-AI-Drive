@@ -133,6 +133,12 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
     private void uploadAccelerometerData(float x, float y, float z) {
         AccelerometerDataModel data = new AccelerometerDataModel(x, y, z, deviceId);
 
+        // Récupérer le vehicleId actif et l'associer si présent
+        Long activeVehicleId = sessionManager.getActiveVehicleId();
+        if (activeVehicleId != -1) {
+            data.setVehicleId(activeVehicleId);
+        }
+
         // Vérifier si l'utilisateur est connecté
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();
@@ -178,8 +184,7 @@ public class AccelerometreFragment extends Fragment implements SensorEventListen
                 Log.e("AUTH_DEBUG", "Échec de connexion: " + t.getMessage());
             }
         });
-    };
-
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

@@ -133,6 +133,12 @@ public class GyroscopeFragment extends Fragment implements SensorEventListener {
     private void uploadGyroscopeData(float rotX, float rotY, float rotZ) {
         GyroscopeDataModel data = new GyroscopeDataModel(rotX, rotY, rotZ, deviceId);
 
+        // Récupérer le vehicleId actif et l'associer si présent
+        Long activeVehicleId = sessionManager.getActiveVehicleId();
+        if (activeVehicleId != -1) {
+            data.setVehicleId(activeVehicleId);
+        }
+
         // Vérifier si l'utilisateur est connecté
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(requireContext(), "Veuillez vous connecter pour envoyer des données", Toast.LENGTH_SHORT).show();

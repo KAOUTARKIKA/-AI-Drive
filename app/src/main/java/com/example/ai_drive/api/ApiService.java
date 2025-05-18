@@ -40,7 +40,7 @@ public interface ApiService {
             @Header("Authorization") String token,
             @Body GyroscopeDataModel data);
 
-    // Nouvelles méthodes pour les véhicules
+    // Endpoints pour les véhicules
     @GET("/api/vehicles")
     Call<List<VehicleModel>> getAllVehicles();
 
@@ -48,7 +48,7 @@ public interface ApiService {
     Call<VehicleModel> getVehicleById(@Path("id") Long id);
 
     @GET("/api/vehicles/user")
-    Call<List<VehicleModel>> getVehiclesByUser(@Header("Authorization") String token);
+    Call<List<VehicleModel>> getUserVehicles(@Header("Authorization") String token);
 
     @POST("/api/vehicles/{vehicleId}/assign")
     Call<Void> assignVehicleToUser(

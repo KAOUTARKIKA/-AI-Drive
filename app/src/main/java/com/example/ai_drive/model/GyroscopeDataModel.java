@@ -1,6 +1,7 @@
 package com.example.ai_drive.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class GyroscopeDataModel {
     private float rotationX;
@@ -8,13 +9,14 @@ public class GyroscopeDataModel {
     private float rotationZ;
     private String deviceId;
     private String timestamp;
+    private Long vehicleId;
 
     public GyroscopeDataModel(float rotationX, float rotationY, float rotationZ, String deviceId) {
         this.rotationX = rotationX;
         this.rotationY = rotationY;
         this.rotationZ = rotationZ;
         this.deviceId = deviceId;
-        this.timestamp = LocalDateTime.now().toString();
+        this.timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
     }
 
     // Getters et Setters
@@ -56,5 +58,13 @@ public class GyroscopeDataModel {
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public Long getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 }
