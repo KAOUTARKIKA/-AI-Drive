@@ -4,11 +4,13 @@ public class SignupRequestModel {
     private String username;
     private String password;
     private String email;
+    private Long vehicleId;
 
-    public SignupRequestModel(String username, String password, String email) {
+    public SignupRequestModel(String username, String password, String email, Long vehicleId) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.vehicleId = vehicleId;
     }
 
     public String getUsername() {
@@ -33,5 +35,13 @@ public class SignupRequestModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Long getVehicleId() {
+        return vehicleId;
+    }
+
+    public void setVehicleId(Long vehicleId) {
+        this.vehicleId = vehicleId;
     }
 }
