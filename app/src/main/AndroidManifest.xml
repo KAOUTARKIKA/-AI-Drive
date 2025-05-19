@@ -26,6 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AIDrive"
         tools:targetApi="31">
+
+        <service
+            android:name=".service.AlertDetectionService"
+            android:enabled="true"
+            android:exported="false" />
         <activity
             android:name=".SelectVehicleActivity"
             android:exported="false" />

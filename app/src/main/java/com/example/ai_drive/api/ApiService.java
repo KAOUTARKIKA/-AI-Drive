@@ -1,6 +1,7 @@
 package com.example.ai_drive.api;
 
 import com.example.ai_drive.model.AccelerometerDataModel;
+import com.example.ai_drive.model.AlertModel;
 import com.example.ai_drive.model.AuthResponseModel;
 import com.example.ai_drive.model.GPSDataModel;
 import com.example.ai_drive.model.GyroscopeDataModel;
@@ -59,4 +60,14 @@ public interface ApiService {
     Call<Void> removeVehicleFromUser(
             @Path("vehicleId") Long vehicleId,
             @Header("Authorization") String token);
+
+
+    @POST("/api/alerts")
+    Call<AlertModel> createAlert(@Header("Authorization") String token, @Body AlertModel alertModel);
+
+    @GET("/api/alerts/user")
+    Call<List<AlertModel>> getUserAlerts(@Header("Authorization") String token);
+
+    @GET("/api/alerts/vehicle/{vehicleId}")
+    Call<List<AlertModel>> getVehicleAlerts(@Path("vehicleId") Long vehicleId, @Header("Authorization") String token);
 }
