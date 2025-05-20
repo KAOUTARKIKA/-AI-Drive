@@ -5,6 +5,7 @@ public class AuthResponseModel {
     private String username;
     private Long userId;
 
+
     public String getToken() {
         return token;
     }
@@ -28,4 +29,6 @@ public class AuthResponseModel {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+
 }

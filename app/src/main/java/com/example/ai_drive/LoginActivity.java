@@ -15,8 +15,11 @@ import com.example.ai_drive.api.ApiClient;
 import com.example.ai_drive.api.ApiService;
 import com.example.ai_drive.model.AuthResponseModel;
 import com.example.ai_drive.model.LoginRequestModel;
+import com.example.ai_drive.model.VehicleModel;
 import com.example.ai_drive.utils.SessionManager;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Envoyer la requête d'authentification
         apiService.login(loginRequest).enqueue(new Callback<AuthResponseModel>() {
+            // Dans onResponse après l'authentification réussie
             @Override
             public void onResponse(Call<AuthResponseModel> call, Response<AuthResponseModel> response) {
                 progressBar.setVisibility(View.GONE);
@@ -107,7 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                             authResponse.getToken(),
                             authResponse.getUsername(),
                             authResponse.getUserId()
+                             // Ajout de l'ID du véhicule
                     );
+
+                    // Récupérer et définir automatiquement un véhicule actif
+                    loadAndSetDefaultVehicle(authResponse.getToken());
 
                     // Rediriger vers l'activité principale
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -116,6 +124,35 @@ public class LoginActivity extends AppCompatActivity {
                     // Gérer les erreurs
                     Toast.makeText(LoginActivity.this, "Échec de la connexion: identifiants incorrects", Toast.LENGTH_LONG).show();
                 }
+            }
+
+            // Ajouter cette nouvelle méthode pour charger et définir un véhicule par défaut
+            private void loadAndSetDefaultVehicle(String token) {
+                // Récupérer le token formaté
+                String formattedToken = "Bearer " + token;
+
+                // Appeler l'API pour récupérer les véhicules de l'utilisateur
+                apiService.getUserVehicles(formattedToken).enqueue(new Callback<List<VehicleModel>>() {
+                    @Override
+                    public void onResponse(Call<List<VehicleModel>> call, Response<List<VehicleModel>> response) {
+                        if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                            // Définir le premier véhicule comme actif
+                            VehicleModel defaultVehicle = response.body().get(0);
+                            sessionManager.setActiveVehicle(defaultVehicle.getId());
+                            Toast.makeText(LoginActivity.this,
+                                    "Véhicule par défaut: " + defaultVehicle.getBrand() + " " + defaultVehicle.getModel(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<VehicleModel>> call, Throwable t) {
+                        // En cas d'échec, on ne bloque pas le flux principal
+                        Toast.makeText(LoginActivity.this,
+                                "Impossible de charger un véhicule par défaut, veuillez en sélectionner un manuellement.",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override

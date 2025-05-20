@@ -15,6 +15,37 @@ public class AlertModel {
     private String data;
     private Long vehicleId;
 
+    // Ajouter ces champs
+    private Double latitude;
+    private Double longitude;
+
+
+    private Long userId;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
     // Classe interne pour la localisation
     public static class LocationModel {
         private double latitude;
@@ -112,8 +143,17 @@ public class AlertModel {
         return location;
     }
 
+    //public void setLocation(LocationModel location) {
+        //this.location = location;
+    //}
+
+    // Dans la méthode setLocation, ajoutez la synchronisation
     public void setLocation(LocationModel location) {
         this.location = location;
+        if (location != null) {
+            this.latitude = location.getLatitude();
+            this.longitude = location.getLongitude();
+        }
     }
 
     public String getNotes() {

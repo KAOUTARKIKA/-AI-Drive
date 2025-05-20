@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         }
-
+// Démarrer le service de détection d'alertes
+        Intent alertServiceIntent = new Intent(this, AlertDetectionService.class);
+        startService(alertServiceIntent);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -70,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // Démarrer le service de détection d'alertes
-        Intent alertServiceIntent = new Intent(this, AlertDetectionService.class);
-        startService(alertServiceIntent);
+
     }
 
     @Override
@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_logout) {
+            // Arrêter le service d'alertes avant la déconnexion
+            Intent alertServiceIntent = new Intent(this, AlertDetectionService.class);
+            stopService(alertServiceIntent);
+
             // Déconnecter l'utilisateur
             sessionManager.logout();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

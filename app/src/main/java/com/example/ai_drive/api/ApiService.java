@@ -70,4 +70,6 @@ public interface ApiService {
 
     @GET("/api/alerts/vehicle/{vehicleId}")
     Call<List<AlertModel>> getVehicleAlerts(@Path("vehicleId") Long vehicleId, @Header("Authorization") String token);
+
+
 }
