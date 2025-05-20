@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import com.example.ai_drive.api.ApiClient;
 import com.example.ai_drive.api.ApiService;
 import com.example.ai_drive.model.AuthResponseModel;
@@ -49,6 +48,15 @@ public class LoginActivity extends AppCompatActivity {
         // Initialisation de l'API Service et SessionManager
         apiService = ApiClient.getClient().create(ApiService.class);
         sessionManager = new SessionManager(this);
+
+        // Vérifier si un nom d'utilisateur a été passé de SignupActivity
+        Intent intent = getIntent();
+        if (intent.hasExtra("username")) {
+            String username = intent.getStringExtra("username");
+            etUsername.setText(username);
+            // Mettre le focus sur le champ de mot de passe
+            etPassword.requestFocus();
+        }
 
         // Vérifier si l'utilisateur est déjà connecté
         if (sessionManager.isLoggedIn()) {
@@ -111,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                             authResponse.getToken(),
                             authResponse.getUsername(),
                             authResponse.getUserId()
-                             // Ajout de l'ID du véhicule
+                            // Ajout de l'ID du véhicule
                     );
 
                     // Récupérer et définir automatiquement un véhicule actif

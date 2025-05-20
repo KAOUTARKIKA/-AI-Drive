@@ -182,17 +182,16 @@ public class SignupActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
                 if (response.isSuccessful() && response.body() != null) {
-                    AuthResponseModel authResponse = response.body();
+                    // Afficher un message de succès
+                    Toast.makeText(SignupActivity.this, "Inscription réussie ! Veuillez vous connecter", Toast.LENGTH_LONG).show();
 
-                    // Sauvegarder les informations de session
-                    sessionManager.createLoginSession(
-                            authResponse.getToken(),
-                            authResponse.getUsername(),
-                            authResponse.getUserId()
-                    );
+                    // Rediriger vers l'activité de connexion au lieu de MainActivity
+                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
 
-                    // Rediriger vers l'activité principale
-                    startActivity(new Intent(SignupActivity.this, MainActivity.class));
+                    // Passer le nom d'utilisateur à l'écran de connexion
+                    intent.putExtra("username", username);
+
+                    startActivity(intent);
                     finish();
                 } else {
                     // Gérer les erreurs
