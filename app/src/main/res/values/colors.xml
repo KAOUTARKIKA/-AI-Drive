@@ -11,6 +11,37 @@
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#03A9F4</color>
 
+    <!-- Couleurs pour les arrière-plans -->
+    <color name="blue_deep">#311B92</color>
+    <color name="blue_deep_end">#1A237E</color>
+    <color name="green_deep">#004D40</color>
+    <color name="green_deep_end">#006064</color>
+    <color name="brown_deep">#5D4037</color>
+    <color name="brown_deep_end">#3E2723</color>
 
+    <!-- Couleurs pour les icônes -->
+    <color name="icon_red">#E91E63</color>
+    <color name="icon_green">#4CAF50</color>
+    <color name="icon_blue">#2196F3</color>
+    <color name="icon_orange">#FF5722</color>
+    <color name="icon_indigo">#3F51B5</color>
+    <color name="icon_teal">#009688</color>
+    <color name="icon_red_light">#F44336</color>
+    <color name="icon_purple">#7B1FA2</color>
+    <color name="icon_amber">#FF9800</color>
+    <color name="icon_cyan">#00BCD4</color>
+
+    <!-- Couleurs pour les textes et séparateurs -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#424242</color>
+    <color name="text_light">#E0E0E0</color>
+    <color name="divider">#E0E0E0</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="card_background_light">#F5F5F5</color>
+    <color name="info_color">#1565C0</color>
+
+    <!-- Couleurs pour les ombres et overlay -->
+    <color name="shadow_color">#80000000</color>
+    <color name="status_background">#33000000</color>
 
 </resources>

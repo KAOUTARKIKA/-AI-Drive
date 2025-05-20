@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Grille de fond -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.3"
+        android:pathData="M0,0 L100,0 L100,100 L0,100 Z"/>
+
+    <!-- Lignes horizontales -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M0,25 L100,25"/>
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M0,50 L100,50"/>
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M0,75 L100,75"/>
+
+    <!-- Lignes verticales -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M25,0 L25,100"/>
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M50,0 L50,100"/>
+
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="0.2"
+        android:pathData="M75,0 L75,100"/>
+
+    <!-- Points aux intersections -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M25,25 A1,1 0 1,1 25,24.9 A1,1 0 1,1 25,25"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M25,50 A1,1 0 1,1 25,49.9 A1,1 0 1,1 25,50"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M25,75 A1,1 0 1,1 25,74.9 A1,1 0 1,1 25,75"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M50,25 A1,1 0 1,1 50,24.9 A1,1 0 1,1 50,25"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M50,50 A1,1 0 1,1 50,49.9 A1,1 0 1,1 50,50"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M50,75 A1,1 0 1,1 50,74.9 A1,1 0 1,1 50,75"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,25 A1,1 0 1,1 75,24.9 A1,1 0 1,1 75,25"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,50 A1,1 0 1,1 75,49.9 A1,1 0 1,1 75,50"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M75,75 A1,1 0 1,1 75,74.9 A1,1 0 1,1 75,75"/>
+</vector>

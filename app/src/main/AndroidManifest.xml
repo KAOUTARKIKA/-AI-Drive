@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Ajouter ces lignes au début du fichier, avant la balise <application> -->
+    <!-- Permissions de localisation -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Capteurs requis -->
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
         android:required="true" />
@@ -12,6 +13,7 @@
         android:name="android.hardware.sensor.gyroscope"
         android:required="false" />
 
+    <!-- Permissions réseau -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -27,10 +29,24 @@
         android:theme="@style/Theme.AIDrive"
         tools:targetApi="31">
 
+        <!-- Nouvelle welcome page comme point d'entrée -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AIDrive.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Service de détection d'alertes -->
         <service
             android:name=".service.AlertDetectionService"
             android:enabled="true"
             android:exported="false" />
+
+        <!-- Activités existantes -->
         <activity
             android:name=".SelectVehicleActivity"
             android:exported="false" />
@@ -45,11 +61,7 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.AIDrive.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!-- Intent-filter déplacé vers WelcomeActivity -->
         </activity>
     </application>
 

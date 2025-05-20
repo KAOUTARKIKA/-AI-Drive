@@ -69,6 +69,15 @@ public class AlertDetectionService extends Service implements SensorEventListene
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Service onStartCommand");
 
+        // Dans onCreate() ou onStartCommand()
+        try {
+            lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastLocation == null) {
+                lastLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+        } catch (SecurityException e) {
+            Log.e(TAG, "Erreur permission: " + e.getMessage());
+        }
         // Enregistrer les listeners
         if (accelerometer != null) {
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);

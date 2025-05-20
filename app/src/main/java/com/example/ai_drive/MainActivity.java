@@ -46,21 +46,11 @@ public class MainActivity extends AppCompatActivity {
         startService(alertServiceIntent);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Version 1.0.0", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         // Afficher le nom d'utilisateur dans le menu latéral
         View headerView = navigationView.getHeaderView(0);
-        TextView tvUsername = headerView.findViewById(R.id.textView);
-        tvUsername.setText(sessionManager.getUsername());
 
         // Passer chaque ID de menu comme un ensemble d'IDs car chacun
         // doit être considéré comme destination de niveau supérieur.
@@ -97,10 +87,6 @@ public class MainActivity extends AppCompatActivity {
             sessionManager.logout();
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
-            return true;
-        } else if (id == R.id.action_select_vehicle) {
-            // Ouvrir l'activité de sélection de véhicule
-            startActivity(new Intent(MainActivity.this, SelectVehicleActivity.class));
             return true;
         }
 
